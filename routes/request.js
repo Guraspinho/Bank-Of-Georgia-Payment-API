@@ -10,7 +10,7 @@ const token = jwt.sign({ clientId }, secretKey, { expiresIn: '1h' });
 
 
 const data = {
-    callback_url: "http://localhost:5000/callback",
+    callback_url: "http://localhost:5000/success",
     external_order_id: "id123",
     purchase_units:
     {
@@ -28,7 +28,7 @@ const data = {
     redirect_urls:
     {
         fail: "http://localhost:5000/fail",
-        success: "http://localhost:5000/succes"
+        success: "http://localhost:5000/success"
     }
 };
 
