@@ -8,20 +8,37 @@ const secretKey = process.env.BOG_SECRET_KEY;
 
 const token = jwt.sign({ clientId }, secretKey, { expiresIn: '1h' });   
 
+const imaginaryData =
+{
+    items: [
+        {
+            name: 'item1',
+            price: 100,
+            quantity: 1,
+            id: 1
+        },
+        {
+            name: 'item2',
+            price: 200,
+            quantity: 2,
+            id: 2
+        }
+    ],
+}
 
 const data = {
     callback_url: "http://localhost:5000/success",
-    external_order_id: "id123",
+    external_order_id: "id123", 
     purchase_units:
     {
-        currency: "USD",
+        currency: "USD", 
         total_amount: 1,
         basket:
         [
             {
                 quantity: 1,
-                unit_price: 1,
-                product_id: "product123"
+                unit_price: imaginaryData.items[0].price, // it is better to retrieve this value from the database
+                product_id: imaginaryData.items[0].id // retrieve this value from the database as well
             }
         ]
     },
