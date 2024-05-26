@@ -6,7 +6,7 @@ const router = express.Router();
 const clientId = process.env.BOG_CLIENT_ID; 
 const secretKey = process.env.BOG_SECRET_KEY; 
 
-const token = jwt.sign({ clientId }, secretKey, { expiresIn: '1h' });
+const token = jwt.sign({ clientId }, secretKey, { expiresIn: '1h' });   
 
 
 const data = {
