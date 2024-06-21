@@ -49,7 +49,8 @@ router.post('/auth', async(req,res) =>
         )
     
         console.log(response.data);
-        return response.data.access_token;
+        res.statuscode(200).json({msg:"The request was successful"})
+        // return response.data.access_token;
     }
     catch (error)
     {
