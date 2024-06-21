@@ -27,7 +27,7 @@ const imaginaryData =
 }
 
 const data = {
-    callback_url: "http://localhost:5000/success",
+    callback_url: "https://payment-demo.onrender.com/success",
     external_order_id: "id123", 
     purchase_units:
     {
@@ -44,8 +44,8 @@ const data = {
     },
     redirect_urls:
     {
-        fail: "http://localhost:5000/fail",
-        success: "http://localhost:5000/success"
+        fail: "https://payment-demo.onrender.com/fail",
+        success: "https://payment-demo.onrender.com/success"
     }
 };
 
