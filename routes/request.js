@@ -26,6 +26,42 @@ const imaginaryData =
     ],
 }
 
+// require authorization
+
+router.post('/auth', async(req,res) =>
+{
+    const authString = `${clientId}:${secretKey}`; // the string which is going to be encoded
+
+    const encodedAuthString = Buffer.from(authString).toString('base64'); // the authString in base64 format
+
+    try
+    {
+    
+        const response = await  axios.post('https://oauth2.bog.ge/auth/realms/bog/protocol/openid-connect/token',
+            {'grant_type':'client_credentials'},
+            {
+                headers:
+                {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': `Basic ${encodedAuthString}`
+                }
+            }
+        )
+    
+        console.log(response.data);
+        return response.data.access_token;
+    }
+    catch (error)
+    {
+        console.log(`Error: ${error}`);
+        res.status(500).json({ error: 'Failed to get access token' });
+    }
+});
+
+
+
+
+
 const data =
 {
     callback_url: "https://payment-demo.onrender.com/success",
