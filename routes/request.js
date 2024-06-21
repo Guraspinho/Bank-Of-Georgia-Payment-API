@@ -13,22 +13,22 @@ const imaginaryData =
     items: [
         {
             name: 'item1',
-            price: 100,
+            price: 1,
             quantity: 1,
             id: 1
         },
         {
             name: 'item2',
-            price: 200,
+            price: 2,
             quantity: 2,
             id: 2
         }
     ],
 }
 
-const data = {
+const data =
+{
     callback_url: "https://payment-demo.onrender.com/success",
-    external_order_id: "id123", 
     purchase_units:
     {
         currency: "USD", 
