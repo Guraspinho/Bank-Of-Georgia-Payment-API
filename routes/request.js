@@ -26,6 +26,7 @@ const imaginaryData =
     ],
 }
 
+// a function which authenticates our server to Bank Of Georgia server
 async function requestToken()
 {
     const authString = `${clientId}:${secretKey}`; // the string which is going to be encoded
@@ -34,7 +35,6 @@ async function requestToken()
 
     try
     {
-    
         const response = await  axios.post('https://oauth2.bog.ge/auth/realms/bog/protocol/openid-connect/token',
             {'grant_type':'client_credentials'},
             {
@@ -87,9 +87,9 @@ const data =
 
 router.post('/order', async (req, res) =>
     {
-        const token = requestToken();
         try
         {
+            const token = await requestToken();
             const response = await axios.post('https://api.bog.ge/payments/v1/ecommerce/orders', data,
             {
                 headers:
