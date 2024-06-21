@@ -95,7 +95,7 @@ router.post('/order', async (req, res) =>
                 headers:
                 {
                     'Accept-Language': 'ka',
-                    'Authorization': `Basic ${token}`,
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
