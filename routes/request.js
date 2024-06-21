@@ -1,12 +1,12 @@
 const axios = require('axios');
 const express = require('express');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 const clientId = process.env.BOG_CLIENT_ID; 
 const secretKey = process.env.BOG_SECRET_KEY; 
 
-const token = jwt.sign({ clientId }, secretKey, { expiresIn: '1h' });   
+// const token = jwt.sign({ clientId }, secretKey, { expiresIn: '1h' });   
 
 const imaginaryData =
 {
@@ -26,9 +26,7 @@ const imaginaryData =
     ],
 }
 
-// require authorization
-
-router.post('/auth', async(req,res) =>
+async function requestToken()
 {
     const authString = `${clientId}:${secretKey}`; // the string which is going to be encoded
 
@@ -49,16 +47,14 @@ router.post('/auth', async(req,res) =>
         )
     
         console.log(response.data);
-        res.status(200).json({msg:"The request was successful"})
-        // return response.data.access_token;
+        return response.data.access_token;
     }
     catch (error)
     {
         console.log(`Error: ${error}`);
         res.status(500).json({ error: 'Failed to get access token' });
     }
-});
-
+}
 
 
 
@@ -91,6 +87,7 @@ const data =
 
 router.post('/order', async (req, res) =>
     {
+        const token = requestToken();
         try
         {
             const response = await axios.post('https://api.bog.ge/payments/v1/ecommerce/orders', data,
