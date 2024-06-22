@@ -65,7 +65,7 @@ const data =
     purchase_units:
     {
         currency: "USD", 
-        total_amount: 1,
+        total_amount: imaginaryData.items[0].price,
         basket:
         [
             {
