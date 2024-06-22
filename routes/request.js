@@ -80,10 +80,7 @@ const data =
         fail: "https://payment-demo.onrender.com/fail",
         success: "https://payment-demo.onrender.com/success"
     },
-    payment_method:
-    [
-        'card'
-    ]
+    payment_method:["card"]
 };
 
 
@@ -98,9 +95,9 @@ router.post('/order', async (req, res) =>
             {
                 headers:
                 {
-                    'Accept-Language': 'ka',
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    "Accept-Language": "ka",
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": 'application/json'
                 }
             });
 
