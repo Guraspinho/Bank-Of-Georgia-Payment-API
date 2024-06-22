@@ -61,7 +61,7 @@ async function requestToken()
 
 const data =
 {
-    callback_url: "https://payment-demo.onrender.com/success",
+    callback_url: "https://payment-demo.onrender.com/callback",
     purchase_units:
     {
         currency: "USD", 
