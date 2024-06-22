@@ -109,8 +109,10 @@ router.post('/order', async (req, res) =>
         }
         catch (error)
         {
-            console.error(error);
-            res.redirect('https://payment-demo.onrender.com/fail')
+            // console.error(error);
+            console.error(`Error: ${error.response ? error.response.data : error.message}`);
+            res.status(500).json({ error: error.response ? error.response.data : 'Failed to create order' });
+            // res.redirect('https://payment-demo.onrender.com/fail')
         }
 
     });
