@@ -2,9 +2,12 @@ const express = require('express');
 require('dotenv').config();
 const requestRoute = require('./routes/request');
 const redirectRoute = require('./routes/redirects');
+const bodyParser = require('body-parser');
 const app = express();
 
 app.use(express.json());
+// app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 // routes
