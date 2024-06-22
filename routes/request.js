@@ -46,7 +46,7 @@ async function requestToken()
             }
         )
     
-        console.log(response.data);
+        // console.log(response.data);
         return response.data.access_token;
     }
     catch (error)
@@ -106,6 +106,7 @@ router.post('/order', async (req, res) =>
         catch (error)
         {
             console.error(error);
+            res.redirect('https://payment-demo.onrender.com/fail')
         }
 
     });
