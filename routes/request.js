@@ -79,7 +79,11 @@ const data =
     {
         fail: "https://payment-demo.onrender.com/fail",
         success: "https://payment-demo.onrender.com/success"
-    }
+    },
+    payment_method:
+    [
+        'card'
+    ]
 };
 
 
