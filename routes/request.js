@@ -84,8 +84,9 @@ router.post('/order', async (req, res) => {
         const responseData = response.data;
         res.send(responseData);
     } catch (error) {
-        console.error(`Error: ${error.response ? error.response.data : error.message}`);
-        res.status(500).json({ error: error.response ? error.response.data : 'Failed to create order' });
+        console.log(error);
+        
+        res.status(500).json({error});
     }
 });
 
