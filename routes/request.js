@@ -1,15 +1,12 @@
 const axios = require('axios');
 const express = require('express');
-// const jwt = require('jsonwebtoken');
 const router = express.Router();
+const { v4: uuidv4 } = require('uuid');
 
-const clientId = process.env.BOG_CLIENT_ID; 
-const secretKey = process.env.BOG_SECRET_KEY; 
+const clientId = process.env.BOG_CLIENT_ID;
+const secretKey = process.env.BOG_SECRET_KEY;
 
-// const token = jwt.sign({ clientId }, secretKey, { expiresIn: '1h' });   
-
-const imaginaryData =
-{
+const imaginaryData = {
     items: [
         {
             name: 'item1',
@@ -24,96 +21,75 @@ const imaginaryData =
             id: 2
         }
     ],
-}
+};
 
-// a function which authenticates our server to Bank Of Georgia server
-async function requestToken()
-{
-    const authString = `${clientId}:${secretKey}`; // the string which is going to be encoded
+// Function to authenticate with the Bank of Georgia server
+async function requestToken() {
+    const authString = `${clientId}:${secretKey}`;
+    const encodedAuthString = Buffer.from(authString).toString('base64');
 
-    const encodedAuthString = Buffer.from(authString).toString('base64'); // the authString in base64 format
-
-    try
-    {
-        const response = await  axios.post('https://oauth2.bog.ge/auth/realms/bog/protocol/openid-connect/token',
-            {'grant_type':'client_credentials'},
+    try {
+        const response = await axios.post('https://oauth2.bog.ge/auth/realms/bog/protocol/openid-connect/token',
+            'grant_type=client_credentials',
             {
-                headers:
-                {
+                headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'Authorization': `Basic ${encodedAuthString}`
                 }
             }
-        )
-    
-        // console.log(response.data);
+        );
         return response.data.access_token;
-    }
-    catch (error)
-    {
+    } catch (error) {
         console.log(`Error: ${error}`);
-        res.status(500).json({ error: 'Failed to get access token' });
+        throw new Error('Failed to get access token');
     }
 }
 
-
-
-
-const data =
-{
+const data = {
     callback_url: "https://payment-demo.onrender.com/callback",
-    purchase_units:
-    {
-        currency: "USD", 
+    external_order_id: "id123",
+    purchase_units: {
+        currency: "USD",
         total_amount: imaginaryData.items[0].price,
-        basket:
-        [
+        basket: [
             {
-                quantity: 1,
-                unit_price: imaginaryData.items[0].price, // it is better to retrieve this value from the database
-                product_id: imaginaryData.items[0].id // retrieve this value from the database as well
+                product_id: imaginaryData.items[0].id,
+                description: imaginaryData.items[0].name,
+                quantity: imaginaryData.items[0].quantity,
+                unit_price: imaginaryData.items[0].price,
+                total_price: imaginaryData.items[0].price * imaginaryData.items[0].quantity
             }
         ]
     },
-    redirect_urls:
-    {
+    redirect_urls: {
         fail: "https://payment-demo.onrender.com/fail",
         success: "https://payment-demo.onrender.com/success"
     },
-    payment_method:["Card"]
+    payment_method: ["card"]
 };
 
-
-
-
-router.post('/order', async (req, res) =>
-    {
-        try
-        {
-            const token = await requestToken();
-            const response = await axios.post('https://api.bog.ge/payments/v1/ecommerce/orders', data,
+router.post('/order', async (req, res) => {
+    try {
+        const token = await requestToken();
+        const response = await axios.post('https://api.bog.ge/payments/v1/ecommerce/orders', data,
             {
-                headers:
-                {
+                headers: {
                     "Accept-Language": "ka",
                     "Authorization": `Bearer ${token}`,
-                    "Content-Type": 'application/json'
+                    "Content-Type": 'application/json',
+                    "Idempotency-Key": uuidv4()
                 }
             });
 
-            const responseData = response.data;
-            res.send(responseData);
-        }
-        catch (error)
-        {
-            // console.error(error);
-            console.error(`Error: ${error.response ? error.response.data : error.message}`);
-            res.status(500).json({ error: error.response ? error.response.data : 'Failed to create order' });
-            // res.redirect('https://payment-demo.onrender.com/fail')
-        }
+        const responseData = response.data;
+        res.send(responseData);
+    } catch (error) {
+        console.error(`Error: ${error.response ? error.response.data : error.message}`);
+        res.status(500).json({ error: error.response ? error.response.data : 'Failed to create order' });
+    }
+});
 
-    });
-
+module.exports = router;
 
 
 
