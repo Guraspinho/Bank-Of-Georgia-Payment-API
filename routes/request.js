@@ -48,7 +48,6 @@ async function requestToken()
 
 const data = {
     callback_url: "https://payment-demo.onrender.com/callback",
-    external_order_id: "id123",
     purchase_units: {
         currency: "USD",
         total_amount: imaginaryData.items[0].price,
@@ -62,7 +61,8 @@ const data = {
             }
         ]
     },
-    redirect_urls: {
+    redirect_urls:
+    {
         fail: "https://payment-demo.onrender.com/fail",
         success: "https://payment-demo.onrender.com/success"
     },
