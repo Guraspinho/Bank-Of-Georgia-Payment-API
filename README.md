@@ -1,1 +1,3 @@
-payment using Bank Of Georgia API
+# Bank og Georgia api
+
+online payment using BOG api for node.js
